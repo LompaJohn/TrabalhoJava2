@@ -14,24 +14,37 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService clienteService;
-    private final HandlerMapping resourceHandlerMapping;
 
     @GetMapping("listar")
     public ResponseEntity<List<Cliente>> listar() {
         return ResponseEntity.ok(clienteService.buscarTodos());
     }
 
+    @PostMapping("remover/{documento}")
+    public ResponseEntity<ControllerResponse> buscarPorDocumento(@PathVariable String documento) {
+
+        Optional<Cliente> cliente = clienteService.buscarPorDocumento(documento);
+
+        if (cliente.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ControllerResponse().error("Cliente nao encontrado!"));
+        }
+
+        clienteService.removerCliente(cliente.get());
+        return ResponseEntity.ok(new ControllerResponse().message("Cliente removido com sucesso!"));
+    }
+
     @PostMapping("cadastrar")
-    public ResponseEntity<?> cadastrar(@RequestBody ClienteCadastrarDTO request) {
+    public ResponseEntity<ControllerResponse> cadastrar(@RequestBody ClienteCadastrarDTO request) {
         Cliente cliente = new Cliente();
         cliente.setNome(request.getNome());
-        cliente.setTelefone(String.valueOf(request.getTelefone()));
+        cliente.setTelefone(request.getTelefone());
         cliente.setEmail(request.getEmail());
 
 
@@ -41,7 +54,7 @@ public class ClienteController {
         String documento = request.getDocumento();
 
         if (!ClienteDocumentoValidator.validate(documento, tipo)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Documento invalido!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ControllerResponse().error("Documento invalido!"));
         }
 
         switch (tipo) {
@@ -55,11 +68,11 @@ public class ClienteController {
 
         // nao permitir cadastrar se o cliente ja existe
         if (clienteService.buscarPorDocumento(documento).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente ja existe!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ControllerResponse().error("Cliente ja existe!"));
         }
 
         clienteService.salvarCliente(cliente);
 
-        return ResponseEntity.ok("Cliente cadastrado com sucesso!");
+        return ResponseEntity.ok(new ControllerResponse().message("Cliente cadastrado com sucesso!"));
     }
 }

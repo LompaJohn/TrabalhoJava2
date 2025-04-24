@@ -1,5 +1,25 @@
 # Trabalho
 
+## TODO
+- [ ] API
+  - [X] Cliente
+      - [X] Listar Clientes
+      - [X] Buscar Clientes
+      - [X] Remover Cliente
+      - [X] Cadastrar Cliente
+  - [ ] Pacote
+      - [ ] Listar Pacotes
+      - [ ] Buscar Pacotes
+      - [ ] Remover Pacote (apenas se nao tem clientes relacionados)
+      - [ ] Cadastrar Pacote
+  - [ ] Servico de um Pacote
+      - [ ] Listar Servicos
+      - [ ] Buscar Servicos
+      - [ ] Remover Servico
+      - [ ] Incluir Servico
+  - [ ] Listar Pacotes de um Cliente
+  - [ ] Listar Clientes que contrataram um Pacote
+
 ## Sistema para Agência de Viagens
 
 1. Visão Geral
