@@ -8,10 +8,10 @@
       - [X] Remover Cliente
       - [X] Cadastrar Cliente
   - [ ] Pacote
-      - [ ] Listar Pacotes
-      - [ ] Buscar Pacotes
+      - [x] Listar Pacotes
+      - [x] Buscar Pacotes
       - [ ] Remover Pacote (apenas se nao tem clientes relacionados)
-      - [ ] Cadastrar Pacote
+      - [x] Cadastrar Pacote
   - [ ] Servico de um Pacote
       - [ ] Listar Servicos
       - [ ] Buscar Servicos

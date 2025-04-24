@@ -9,9 +9,7 @@ import com.agencia.viagens.sistema.web.validators.ClienteDocumentoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HandlerMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +25,21 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.buscarTodos());
     }
 
+
+    @GetMapping("buscar/{documento}")
+    public ResponseEntity<Cliente> buscarPorDocumento(@PathVariable String documento) {
+
+        Optional<Cliente> cliente = clienteService.buscarPorDocumento(documento);
+
+        if (cliente.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(cliente.get());
+    }
+
     @PostMapping("remover/{documento}")
-    public ResponseEntity<ControllerResponse> buscarPorDocumento(@PathVariable String documento) {
+    public ResponseEntity<ControllerResponse> remover(@PathVariable String documento) {
 
         Optional<Cliente> cliente = clienteService.buscarPorDocumento(documento);
 
