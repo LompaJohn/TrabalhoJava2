@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,17 @@ public class ClienteService {
     }
 
     @Transactional
-    public Cliente buscarPorDocumento(String documento) {
-        return repository.findByCpfOrPassaporte(documento, documento).orElseThrow(() -> new RuntimeException("cliente nao encontrado"));
+    public Optional<Cliente> buscarPorDocumento(String documento) {
+        return repository.findByCpfOrPassaporte(documento, documento);
+    }
+
+    @Transactional
+    public void removerCliente(Cliente cliente) {
+        repository.delete(cliente);
+    }
+
+    @Transactional
+    public Cliente salvarCliente(Cliente cliente) {
+        return repository.save(cliente);
     }
 }
