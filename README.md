@@ -1,24 +1,25 @@
 # Trabalho
 
 ## TODO
-- [ ] API
-  - [X] Cliente
-      - [X] Listar Clientes
-      - [X] Buscar Clientes
-      - [X] Remover Cliente
-      - [X] Cadastrar Cliente
-  - [ ] Pacote
-      - [x] Listar Pacotes
-      - [x] Buscar Pacotes
-      - [ ] Remover Pacote (apenas se nao tem clientes relacionados)
-      - [x] Cadastrar Pacote
-  - [ ] Servico de um Pacote
-      - [ ] Listar Servicos
-      - [ ] Buscar Servicos
-      - [ ] Remover Servico
-      - [ ] Incluir Servico
-  - [ ] Listar Pacotes de um Cliente
-  - [ ] Listar Clientes que contrataram um Pacote
+
+- [x] API
+    - [X] Cliente
+        - [X] Listar Clientes
+        - [X] Buscar Clientes
+        - [X] Remover Cliente
+        - [X] Cadastrar Cliente
+    - [x] Pacote
+        - [x] Listar Pacotes
+        - [x] Buscar Pacotes
+        - [x] Remover Pacote (apenas se nao tem clientes relacionados)
+        - [x] Cadastrar Pacote
+    - [x] Servico de um Pacote
+        - [x] Listar Servicos
+        - [x] Buscar Servicos
+        - [x] Remover Servico
+        - [x] Cadastrar Servico
+    - [x] Listar Pacotes de um Cliente
+    - [x] Listar Clientes que contrataram um Pacote
 
 ## Sistema para Agência de Viagens
 

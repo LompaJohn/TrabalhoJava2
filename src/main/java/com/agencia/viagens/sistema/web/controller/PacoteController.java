@@ -2,12 +2,11 @@ package com.agencia.viagens.sistema.web.controller;
 
 
 import com.agencia.viagens.sistema.entity.Cliente;
-import com.agencia.viagens.sistema.entity.ClienteTipo;
 import com.agencia.viagens.sistema.entity.Pacote;
 import com.agencia.viagens.sistema.service.PacoteService;
-import com.agencia.viagens.sistema.web.dto.ClienteCadastrarDTO;
+import com.agencia.viagens.sistema.service.PedidoService;
+import com.agencia.viagens.sistema.service.ServicoService;
 import com.agencia.viagens.sistema.web.dto.PacoteCadastrarDTO;
-import com.agencia.viagens.sistema.web.validators.ClienteDocumentoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/v1/pacotes")
 @RequiredArgsConstructor
 public class PacoteController {
     private final PacoteService pacoteService;
+    private final PedidoService pedidoService;
+    private final ServicoService servicoService;
 
     @GetMapping("listar")
     public ResponseEntity<List<Pacote>> listar() {
@@ -42,6 +44,11 @@ public class PacoteController {
     @PostMapping("remover/{id}")
     public ResponseEntity<ControllerResponse> remover(@PathVariable Long id) {
 
+
+        if (pedidoService.existePorPacoteId(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ControllerResponse().error("Pacote nao pode ser removido, pedidos dependem dele!"));
+        }
+
         Optional<Pacote> pacote = pacoteService.buscarPorId(id);
 
         if (pacote.isEmpty()) {
@@ -51,6 +58,12 @@ public class PacoteController {
 
         pacoteService.removerPacote(pacote.get());
         return ResponseEntity.ok(new ControllerResponse().message("Pacote removido com sucesso!"));
+    }
+
+    @GetMapping("listar_clientes/{id}")
+    public ResponseEntity<Set<Cliente>> listar_clientes(@PathVariable Long id) {
+        return ResponseEntity.ok().body(pedidoService.buscarClientesPorPacoteId(id));
+
     }
 
     @PostMapping("cadastrar")
@@ -66,6 +79,6 @@ public class PacoteController {
 
         pacoteService.salvarPacote(pacote);
 
-        return ResponseEntity.ok(new ControllerResponse().message("Cliente cadastrado com sucesso!"));
+        return ResponseEntity.ok(new ControllerResponse().message("Pacote cadastrado com sucesso!"));
     }
 }

@@ -1,7 +1,5 @@
 package com.agencia.viagens.sistema.web.dto;
 
-import com.agencia.viagens.sistema.entity.ClienteTipo;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +23,7 @@ public class PacoteCadastrarDTO {
     private int duracaoDias;
 
     @NotNull(message = "Preco eh obrigatorio")
-    @Positive(message = "Preco tem que ser positivo")
+    @PositiveOrZero(message = "Preco tem que ser positivo")
     private BigDecimal preco;
 
     @NotBlank(message = "Tipo eh obrigatorio")

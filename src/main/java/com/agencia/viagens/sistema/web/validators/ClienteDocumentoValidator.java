@@ -8,12 +8,17 @@ public class ClienteDocumentoValidator {
     private static final Pattern pattern = Pattern.compile("^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$");
 
     public static boolean validate(String documento, ClienteTipo tipo) {
+        boolean cpf_valido =
+         pattern.matcher(documento).matches();
+
+
         switch (tipo) {
             case NACIONAL -> {
-                return pattern.matcher(documento).matches();
+                return cpf_valido;
             }
             case ESTRANGEIRO -> {
-                return documento.length() > 5;
+                // evitar ter cpfs nos passaportes pro findByCpfOrPassaporte nunca dar erro
+                return documento.length() > 5 && !cpf_valido;
             }
             default -> {
                 throw new IllegalArgumentException("Tipo invalido");

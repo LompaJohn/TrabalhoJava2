@@ -2,6 +2,7 @@ package com.agencia.viagens.sistema.service;
 
 import com.agencia.viagens.sistema.entity.Pacote;
 import com.agencia.viagens.sistema.repository.PacoteRepository;
+import com.agencia.viagens.sistema.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PacoteService {
     private final PacoteRepository repository;
+    private final PedidoRepository pedidoRepository;
 
 
     @Transactional
@@ -25,11 +27,12 @@ public class PacoteService {
         return repository.findById(id);
     }
 
+
     @Transactional
     public void removerPacote(Pacote pacote) {
-        // TODO: ver se o pacote tem clientes relacionados
-        throw new RuntimeException("Not implemented yet");
-//        repository.delete(pacote);
+
+
+        repository.delete(pacote);
     }
 
     @Transactional

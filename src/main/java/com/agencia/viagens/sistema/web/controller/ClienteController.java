@@ -3,7 +3,10 @@ package com.agencia.viagens.sistema.web.controller;
 
 import com.agencia.viagens.sistema.entity.Cliente;
 import com.agencia.viagens.sistema.entity.ClienteTipo;
+import com.agencia.viagens.sistema.entity.Pacote;
+import com.agencia.viagens.sistema.entity.Pedido;
 import com.agencia.viagens.sistema.service.ClienteService;
+import com.agencia.viagens.sistema.service.PedidoService;
 import com.agencia.viagens.sistema.web.dto.ClienteCadastrarDTO;
 import com.agencia.viagens.sistema.web.validators.ClienteDocumentoValidator;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +16,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/clientes")
 @RequiredArgsConstructor
 public class ClienteController {
     private final ClienteService clienteService;
+    private final PedidoService pedidoService;
 
     @GetMapping("listar")
     public ResponseEntity<List<Cliente>> listar() {
         return ResponseEntity.ok(clienteService.buscarTodos());
+    }
+
+    @GetMapping("listar_pacotes/{documento}")
+    public ResponseEntity<Set<Pacote>> listarPacotes(@PathVariable String documento) {
+
+        Optional<Cliente> cliente = clienteService.buscarPorDocumento(documento);
+
+        if (cliente.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        Set<Pacote> pacotes = pedidoService.buscarPorClienteId(cliente.get().getId()).stream().map(Pedido::getPacote).collect(Collectors.toSet());
+
+        return ResponseEntity.ok().body(pacotes);
     }
 
 
@@ -77,7 +97,6 @@ public class ClienteController {
             }
         }
 
-        // nao permitir cadastrar se o cliente ja existe
         if (clienteService.buscarPorDocumento(documento).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ControllerResponse().error("Cliente ja existe!"));
         }
