@@ -8,222 +8,106 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-plane"></i> Agência de Viagens</h1>
-        </header>
+<div class="container">
+    <header>
+        <h1><i class="fas fa-plane"></i> Agência de Viagens</h1>
+    </header>
 
-        <nav class="tabs">
-            <button class="tab-btn active" data-tab="clientes">Clientes</button>
-            <button class="tab-btn" data-tab="pacotes">Pacotes</button>
-            <button class="tab-btn" data-tab="servicos">Serviços</button>
-            <button class="tab-btn" data-tab="vendas">Vendas</button>
-        </nav>
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="clientes">Clientes</button>
+        <button class="tab-btn" data-tab="pacotes">Pacotes</button>
+        <button class="tab-btn" data-tab="servicos">Serviços</button>
+        <button class="tab-btn" data-tab="pedidos">Pedidos</button>
+    </nav>
 
-        <main>
-            <!-- Seção de Clientes -->
-            <section id="clientes" class="tab-content active">
-                <div class="section-header">
-                    <h2><i class="fas fa-users"></i> Clientes Cadastrados</h2>
-                    <button class="btn primary" id="add-client-btn"><i class="fas fa-plus"></i> Novo Cliente</button>
+    <main>
+        <section id="clientes" class="tab-content active">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> Clientes Cadastrados</h2>
+                <button class="btn primary" id="add-client-btn"><i class="fas fa-plus"></i> Novo Cliente</button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="client-search" placeholder="Buscar cliente por nome ou documento...">
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Documento</th>
+                    <th>Tipo</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="clientes-lista">
+                </tbody>
+            </table>
+        </section>
+
+        <section id="pacotes" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-suitcase"></i> Pacotes de Viagem</h2>
+                <button class="btn primary" id="add-package-btn"><i class="fas fa-plus"></i> Novo Pacote</button>
+            </div>
+
+            <div class="card-container" id="pacotes-lista">
+            </div>
+        </section>
+
+        <section id="servicos" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-concierge-bell"></i> Serviços Adicionais</h2>
+                <button class="btn primary" id="add-service-btn"><i class="fas fa-plus"></i> Novo Serviço</button>
+            </div>
+
+            <div class="services-grid" id="servicos-lista">
+            </div>
+        </section>
+        <section id="pedidos" class="tab-content">
+            <div class="section-header">
+                <h2><i class="fas fa-file-invoice-dollar"></i> Pedidos</h2>
+                <button class="btn primary" id="add-pedido-btn"><i class="fas fa-plus"></i> Novo Pedido</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Pacote</th>
+                    <th>Data</th>
+                    <th>Serviços</th>
+                    <th>Total</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody id="pedidos-lista">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="modal-title"></h3>
+            <form id="modal-form">
+                <div id="modal-fields">
                 </div>
-
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Telefone</th>
-                            <th>E-mail</th>
-                            <th>Documento</th>
-                            <th>Tipo</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Carlos Oliveira</td>
-                            <td>(31) 98765-4321</td>
-                            <td>carlos.oliveira@email.com</td>
-                            <td>111.222.333-44</td>
-                            <td><span class="badge nacional">Nacional</span></td>
-                            <td>
-                                <button class="icon-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ana Beatriz Costa</td>
-                            <td>(51) 99876-5432</td>
-                            <td>ana.costa@email.com</td>
-                            <td>555.666.777-88</td>
-                            <td><span class="badge nacional">Nacional</span></td>
-                            <td>
-                                <button class="icon-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Robert Johnson</td>
-                            <td>(1) 555-1234</td>
-                            <td>robert.j@email.com</td>
-                            <td>US98765432</td>
-                            <td><span class="badge estrangeiro">Estrangeiro</span></td>
-                            <td>
-                                <button class="icon-btn edit"><i class="fas fa-edit"></i></button>
-                                <button class="icon-btn delete"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- Seção de Pacotes -->
-            <section id="pacotes" class="tab-content">
-                <div class="section-header">
-                    <h2><i class="fas fa-suitcase"></i> Pacotes de Viagem</h2>
-                    <button class="btn primary" id="add-package-btn"><i class="fas fa-plus"></i> Novo Pacote</button>
+                <div class="form-actions">
+                    <button type="submit" class="btn primary">Salvar</button>
                 </div>
-
-                <div class="card-container">
-                    <div class="package-card">
-                        <h3>Exploração Pantanal</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Mato Grosso do Sul</p>
-                        <p><i class="fas fa-calendar-alt"></i> 10 dias</p>
-                        <p><i class="fas fa-tag"></i> Aventura</p>
-                        <p class="price">R$ 2.800,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-
-                    <div class="package-card">
-                        <h3>Resort Premium em Gramado</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Gramado, RS</p>
-                        <p><i class="fas fa-calendar-alt"></i> 5 dias</p>
-                        <p><i class="fas fa-tag"></i> Luxo</p>
-                        <p class="price">R$ 8.500,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-
-                    <div class="package-card">
-                        <h3>Paraíso nas Bahamas</h3>
-                        <p><i class="fas fa-map-marker-alt"></i> Nassau, Bahamas</p>
-                        <p><i class="fas fa-calendar-alt"></i> 8 dias</p>
-                        <p><i class="fas fa-tag"></i> Romântico</p>
-                        <p class="price">R$ 22.000,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Seção de Serviços -->
-            <section id="servicos" class="tab-content">
-                <div class="section-header">
-                    <h2><i class="fas fa-concierge-bell"></i> Serviços Adicionais</h2>
-                    <button class="btn primary" id="add-service-btn"><i class="fas fa-plus"></i> Novo Serviço</button>
-                </div>
-
-                <div class="services-grid">
-                    <div class="service-card">
-                        <h3>Seguro Viagem</h3>
-                        <p>Cobertura básica para imprevistos</p>
-                        <p class="price">R$ 120,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <h3>City Tour Privativo</h3>
-                        <p>Passeio personalizado pela cidade</p>
-                        <p class="price">R$ 400,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-
-                    <div class="service-card">
-                        <h3>Wi-Fi Internacional</h3>
-                        <p>Chip com 5GB de internet no exterior</p>
-                        <p class="price">R$ 50,00</p>
-                        <div class="card-actions">
-                            <button class="btn small">Editar</button>
-                            <button class="btn small danger">Excluir</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Seção de Vendas -->
-            <section id="vendas" class="tab-content">
-                <div class="section-header">
-                    <h2><i class="fas fa-handshake"></i> Vendas Realizadas</h2>
-                </div>
-
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Cliente</th>
-                            <th>Pacote</th>
-                            <th>Data</th>
-                            <th>Valor</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Carlos Oliveira</td>
-                            <td>Resort Premium em Gramado</td>
-                            <td>15/03/2024</td>
-                            <td>R$ 8.500,00</td>
-                            <td><span class="badge confirmado">Confirmado</span></td>
-                            <td>
-                                <button class="icon-btn view"><i class="fas fa-eye"></i></button>
-                                <button class="icon-btn print"><i class="fas fa-print"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Robert Johnson</td>
-                            <td>Paraíso nas Bahamas</td>
-                            <td>22/07/2024</td>
-                            <td>R$ 22.000,00</td>
-                            <td><span class="badge confirmado">Confirmado</span></td>
-                            <td>
-                                <button class="icon-btn view"><i class="fas fa-eye"></i></button>
-                                <button class="icon-btn print"><i class="fas fa-print"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ana Beatriz Costa</td>
-                            <td>Gastronomia Italiana</td>
-                            <td>10/05/2024</td>
-                            <td>R$ 18.000,00</td>
-                            <td><span class="badge pendente">Pendente</span></td>
-                            <td>
-                                <button class="icon-btn view"><i class="fas fa-eye"></i></button>
-                                <button class="icon-btn print"><i class="fas fa-print"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-        </main>
-
-        <footer>
-            <p>Sistema Agência de Viagens &copy; 2025</p>
-        </footer>
+            </form>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <footer>
+        <p>Sistema Agência de Viagens &copy; 2025</p>
+    </footer>
+</div>
+
+<script src="script.js"></script>
 </body>
-</html>
+</html>/html>
