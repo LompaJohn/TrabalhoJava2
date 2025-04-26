@@ -6,11 +6,15 @@ import com.agencia.viagens.sistema.web.dto.PedidoCadastrarDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("api/v1/pedido")
@@ -52,6 +56,7 @@ public class PedidoController {
         return ResponseEntity.ok(new ControllerResponse().message("Pedido removido com sucesso!"));
     }
 
+    @Transactional
     @PostMapping("cadastrar")
     public ResponseEntity<ControllerResponse> cadastrar(@RequestBody PedidoCadastrarDTO request) {
 
@@ -75,10 +80,7 @@ public class PedidoController {
 
         Map<Long, Long> adicionaisIdQuant = request.getServicosAdicionaisIdQuant();
 
-        Set<PedidoServico> pedidosAdicionais = new HashSet<>();
-
         if (!adicionaisIdQuant.isEmpty()) {
-
             Set<Long> adicionaisIdSet = adicionaisIdQuant.keySet();
             List<Servico> servicos = servicoService.buscarPorIds(adicionaisIdSet);
 
@@ -87,26 +89,22 @@ public class PedidoController {
             }
 
             for (Servico servico : servicos) {
-                valorTotal = valorTotal.add(servico.getPreco());
-                PedidoServico pedidoServico = new PedidoServico();
+                Long quantidade = adicionaisIdQuant.get(servico.getId());
+                BigDecimal precoTotalServico = servico.getPreco().multiply(BigDecimal.valueOf(quantidade));
+                valorTotal = valorTotal.add(precoTotalServico);
 
-                pedidoServico.setPedido(pedido);
+                PedidoServico pedidoServico = new PedidoServico();
                 pedidoServico.setServico(servico);
                 pedidoServico.setPrecoUnitario(servico.getPreco());
-                pedidoServico.setQuantidade(adicionaisIdQuant.get(servico.getId()));
+                pedidoServico.setQuantidade(quantidade);
 
-                pedidosAdicionais.add(pedidoServico);
+                pedido.addServico(pedidoServico);
             }
-
-
         }
 
         pedido.setValorTotal(valorTotal);
-        pedido.setStatus(PedidoStatus.PENDENTE);
-        pedido.setServicos(pedidosAdicionais);
 
         pedidoService.salvarPedido(pedido);
-
         return ResponseEntity.ok(new ControllerResponse().message("Pedido cadastrado com sucesso!"));
     }
 }

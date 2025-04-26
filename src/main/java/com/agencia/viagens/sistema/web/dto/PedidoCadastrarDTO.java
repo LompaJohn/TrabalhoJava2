@@ -1,6 +1,5 @@
 package com.agencia.viagens.sistema.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -21,7 +20,7 @@ public class PedidoCadastrarDTO {
     private Long pacoteId;
 
     @NotNull(message = "data da viagem eh obrigatoria")
-    @JsonFormat(pattern = "dd/MM/yyyy")
+//    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataViagem;
 
     @NotNull

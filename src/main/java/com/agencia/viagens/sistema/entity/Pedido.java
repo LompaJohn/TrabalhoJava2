@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -44,7 +45,11 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private PedidoStatus status;
 
-    @OneToMany
-    @JoinColumn(name = "pedido_id")
-    private Set<PedidoServico> servicos;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoServico> servicos = new HashSet<>();
+
+    public void addServico(PedidoServico servico) {
+        servicos.add(servico);
+        servico.setPedido(this);
+    }
 }

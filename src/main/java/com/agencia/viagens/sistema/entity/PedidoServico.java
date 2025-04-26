@@ -3,10 +3,7 @@ package com.agencia.viagens.sistema.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -16,11 +13,12 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class PedidoServico {
     @EmbeddedId
-    private PedidoServicoId id;
+    private PedidoServicoId id = new PedidoServicoId();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("pedidoId")
     @JsonIgnore
     @JoinColumn(name = "pedido_id")
