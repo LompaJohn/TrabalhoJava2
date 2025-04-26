@@ -36,7 +36,7 @@ public class PedidoService {
 
     @Transactional
     public List<Pedido> buscarPorClienteId(Long id) {
-        return repository.findByPacoteId(id);
+        return repository.findByClienteId(id);
     }
 
     @Transactional

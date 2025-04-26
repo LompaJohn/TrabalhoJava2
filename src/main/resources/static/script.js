@@ -307,7 +307,7 @@ class InterfaceController {
                 input: `
                 <select id="pedido-cliente" required>
                     ${clientes.map(c => `
-                        <option value="${c.documento || c.cpf || c.passaporte}">${c.nome} (${c.documento})</option>
+                        <option value="${c.documento || c.cpf || c.passaporte}">${c.nome} (${c.cpf || c.passaporte})</option>
                     `).join('')}
                 </select>
             `,
