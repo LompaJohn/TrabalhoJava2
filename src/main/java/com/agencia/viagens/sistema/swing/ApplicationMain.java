@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import lombok.Getter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+
 import javax.swing.*;
 
 public class ApplicationMain {
@@ -30,7 +31,6 @@ public class ApplicationMain {
 
                 MainFrame mainFrame = new MainFrame();
                 mainFrame.setVisible(true);
-                System.err.println("Swing UI is now running");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.exit(1);

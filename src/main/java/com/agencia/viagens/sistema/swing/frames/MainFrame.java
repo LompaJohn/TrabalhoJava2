@@ -4,9 +4,6 @@ package com.agencia.viagens.sistema.swing.frames;
 // import org.springframework.beans.factory.annotation.Autowired;
 // someService = ApplicationMain.getSpringContext().getBean(SomeService.class);
 
-import com.agencia.viagens.sistema.swing.ApplicationMain;
-
-import com.formdev.flatlaf.FlatDarkLaf;
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,6 +18,8 @@ public class MainFrame extends JFrame {
         setTitle("Agência de Viagens");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
+        setExtendedState(JFrame.NORMAL);
+
         setLayout(new BorderLayout());
 
 
@@ -28,7 +27,7 @@ public class MainFrame extends JFrame {
         title.setFont(new Font("Arial", Font.BOLD, 24));
         title.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
-        JPanel buttonPanel = new JPanel(new GridLayout(2,2,20,20));
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 20, 20));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JButton clientesBtn = new JButton("Clientes");
