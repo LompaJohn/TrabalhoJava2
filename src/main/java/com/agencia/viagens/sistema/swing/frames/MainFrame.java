@@ -8,8 +8,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
+    private ClienteFrame clienteFrame;
 
     public MainFrame() {
+        this.clienteFrame = new ClienteFrame(this);
         initializeUI();
     }
 
@@ -17,7 +19,8 @@ public class MainFrame extends JFrame {
 
         setTitle("Agência de Viagens");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+//        setSize(800, 600);
+        setSize(1280, 720);
         setExtendedState(JFrame.NORMAL);
 
         setLayout(new BorderLayout());
@@ -32,6 +35,10 @@ public class MainFrame extends JFrame {
 
         JButton clientesBtn = new JButton("Clientes");
         clientesBtn.setFont(new Font("Arial", Font.BOLD, 24));
+        clientesBtn.addActionListener(e -> {
+            this.setVisible(false);
+            clienteFrame.setVisible(true);
+        });
 
         JButton pacotesBtn = new JButton("Pacotes");
         pacotesBtn.setFont(new Font("Arial", Font.BOLD, 24));

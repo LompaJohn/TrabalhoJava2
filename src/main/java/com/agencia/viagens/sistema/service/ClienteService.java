@@ -26,6 +26,11 @@ public class ClienteService {
     }
 
     @Transactional
+    public List<Cliente> buscar(String query) {
+        return repository.buscar(query);
+    }
+
+    @Transactional
     public void removerCliente(Cliente cliente) {
         repository.delete(cliente);
     }
