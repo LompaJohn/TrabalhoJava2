@@ -5,6 +5,8 @@ import com.agencia.viagens.sistema.entity.ClienteTipo;
 import com.agencia.viagens.sistema.service.ClienteService;
 import com.agencia.viagens.sistema.swing.ApplicationMain;
 import com.agencia.viagens.sistema.swing.ButtonColumn;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Optional;
 
 // TODO: deletar cliente do bd
 // TODO: cadastar cliente no db
@@ -81,6 +84,10 @@ public class ClienteFrame extends JFrame {
         JLabel telLabel = new JLabel("Telefone:");
         JTextField telField = new JTextField();
 
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+        telField.putClientProperty(
+                "JTextField.placeholderText", "ex: " + phoneUtil.format(phoneUtil.getExampleNumber("BR"), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
+
         JLabel emailLabel = new JLabel("E-mail:");
         JTextField emailField = new JTextField();
 
@@ -91,6 +98,7 @@ public class ClienteFrame extends JFrame {
         JTextField docField = new JTextField();
 
         JButton saveButton = new JButton("Salvar");
+        JButton cancelButton = new JButton("Cancelar");
 
         saveButton.addActionListener(e -> {
             Cliente cliente = new Cliente();
@@ -110,8 +118,19 @@ public class ClienteFrame extends JFrame {
 
             cliente.setTipo(tipo);
 
-//            this.clienteService.salvarCliente(cliente);
+            try {
+                this.clienteService.salvarCliente(cliente);
+            } catch (ValidationException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            atualizarTabelaClientes(null);
+
+            dialogo.dispose();
+        });
+
+        cancelButton.addActionListener(e -> {
             dialogo.dispose();
         });
 
@@ -126,6 +145,7 @@ public class ClienteFrame extends JFrame {
         panel.add(docLabel);
         panel.add(docField);
         panel.add(saveButton);
+        panel.add(cancelButton);
 
         dialogo.add(panel);
         dialogo.setVisible(true);
@@ -207,8 +227,14 @@ public class ClienteFrame extends JFrame {
                         JOptionPane.YES_NO_OPTION);
 
                 if (result == JOptionPane.YES_OPTION) {
-                    System.out.println("Deleting row: " + modelRow);
                     ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+                    Long id = (Long) table.getModel().getValueAt(modelRow, 0);
+
+                    Optional<Cliente> cliente = clienteService.buscarPorId(id);
+
+                    assert cliente.isPresent();
+
+                    clienteService.removerCliente(cliente.get());
                 }
             }
         };
