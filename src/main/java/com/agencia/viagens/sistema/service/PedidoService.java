@@ -1,6 +1,5 @@
 package com.agencia.viagens.sistema.service;
 
-
 import com.agencia.viagens.sistema.entity.Cliente;
 import com.agencia.viagens.sistema.entity.Pedido;
 import com.agencia.viagens.sistema.repository.PedidoRepository;
@@ -27,12 +26,10 @@ public class PedidoService {
         return repository.findById(id);
     }
 
-
     @Transactional
     public Set<Cliente> buscarClientesPorPacoteId(Long pacoteId) {
         return repository.findClientsByPacoteId(pacoteId);
     }
-
 
     @Transactional
     public List<Pedido> buscarPorClienteId(Long id) {
@@ -43,7 +40,6 @@ public class PedidoService {
     public boolean existePorPacoteId(Long pacoteId) {
         return repository.existsByPacoteId(pacoteId);
     }
-
 
     @Transactional
     public void removerPedido(Pedido pedido) {

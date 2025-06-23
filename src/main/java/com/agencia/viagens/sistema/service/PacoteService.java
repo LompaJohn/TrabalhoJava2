@@ -16,7 +16,6 @@ public class PacoteService {
     private final PacoteRepository repository;
     private final PedidoRepository pedidoRepository;
 
-
     @Transactional
     public List<Pacote> buscarTodos() {
         return repository.findAll();
@@ -27,11 +26,8 @@ public class PacoteService {
         return repository.findById(id);
     }
 
-
     @Transactional
     public void removerPacote(Pacote pacote) {
-
-
         repository.delete(pacote);
     }
 

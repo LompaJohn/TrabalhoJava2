@@ -2,7 +2,10 @@ package com.agencia.viagens.sistema.swing.frames;
 
 import com.agencia.viagens.sistema.entity.Cliente;
 import com.agencia.viagens.sistema.entity.ClienteTipo;
+import com.agencia.viagens.sistema.entity.Pacote;
+import com.agencia.viagens.sistema.entity.Pedido;
 import com.agencia.viagens.sistema.service.ClienteService;
+import com.agencia.viagens.sistema.service.PedidoService;
 import com.agencia.viagens.sistema.swing.ApplicationMain;
 import com.agencia.viagens.sistema.swing.ButtonColumn;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -15,9 +18,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 // TODO: deletar cliente do bd
-// TODO: cadastar cliente no db
 // TODO: ver pacotes do cliente
 
 public class ClienteFrame extends JFrame {
@@ -25,11 +29,15 @@ public class ClienteFrame extends JFrame {
     private DefaultTableModel tabelaClientesModel;
     private JTable tabelaClientes;
     private ClienteService clienteService;
+    private PedidoService pedidoService;
     private JPanel mainPanel;
 
     public ClienteFrame(JFrame parent) {
         this.parent = parent;
+
         this.clienteService = ApplicationMain.getSpringContext().getBean(ClienteService.class);
+        this.pedidoService = ApplicationMain.getSpringContext().getBean(PedidoService.class);
+
         this.mainPanel = new JPanel();
         this.mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -61,8 +69,7 @@ public class ClienteFrame extends JFrame {
 
         headerPanel.setMaximumSize(new Dimension(
                 Integer.MAX_VALUE,
-                10
-        ));
+                10));
 
         headerPanel.add(clienteLabel, BorderLayout.WEST);
         headerPanel.add(addButton, BorderLayout.EAST);
@@ -86,13 +93,17 @@ public class ClienteFrame extends JFrame {
 
         PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
         telField.putClientProperty(
-                "JTextField.placeholderText", "ex: " + phoneUtil.format(phoneUtil.getExampleNumber("BR"), PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
+                "JTextField.placeholderText", "ex: " + phoneUtil.format(phoneUtil.getExampleNumber("BR"),
+                        PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL));
 
         JLabel emailLabel = new JLabel("E-mail:");
         JTextField emailField = new JTextField();
 
         JLabel tipoLabel = new JLabel("Tipo de Cliente:");
-        JComboBox<String> tipoCombo = new JComboBox<>(new String[]{"Nacional (CPF)", "Estrangeiro (Passaporte)"});
+
+        String comboCPF = "Nacional (CPF)";
+        String comboPassaporte = "Estrangeiro (Passaporte)";
+        JComboBox<String> tipoCombo = new JComboBox<>(new String[] { comboCPF, comboPassaporte });
 
         JLabel docLabel = new JLabel("Documento:");
         JTextField docField = new JTextField();
@@ -108,7 +119,7 @@ public class ClienteFrame extends JFrame {
 
             ClienteTipo tipo = null;
 
-            if (tipoLabel.getText().equals("Nacional (CPF)")) {
+            if (tipoCombo.getSelectedItem().equals(comboCPF)) {
                 tipo = ClienteTipo.NACIONAL;
                 cliente.setCpf(docField.getText());
             } else {
@@ -155,8 +166,7 @@ public class ClienteFrame extends JFrame {
         JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
         searchPanel.setMaximumSize(new Dimension(
                 Integer.MAX_VALUE,
-                20
-        ));
+                20));
         JTextField searchField = new JTextField();
 
         searchField.putClientProperty("JTextField.placeholderText", "Buscar cliente...");
@@ -173,6 +183,7 @@ public class ClienteFrame extends JFrame {
 
         JButton limparBuscaBtn = new JButton("Limpar Busca");
         limparBuscaBtn.addActionListener(e -> {
+            searchField.setText("");
             atualizarTabelaClientes(null);
         });
 
@@ -188,7 +199,7 @@ public class ClienteFrame extends JFrame {
     }
 
     private void createClienteList() {
-        String[] colunas = {"ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar"};
+        String[] colunas = { "ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar" };
 
         int nomeIdx = ArrayUtils.indexOf(colunas, "Nome");
         int documentoIdx = ArrayUtils.indexOf(colunas, "Documento");
@@ -222,27 +233,41 @@ public class ClienteFrame extends JFrame {
 
                 int result = JOptionPane.showConfirmDialog(
                         window,
-                        "Tem certeza que quer deletar o cliente " + nome + "(" + documento + ")?",
+                        "Tem certeza que quer deletar o cliente \"" + nome + "\" (" + documento + ")?",
                         "Confirmação",
                         JOptionPane.YES_NO_OPTION);
 
                 if (result == JOptionPane.YES_OPTION) {
-                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
                     Long id = (Long) table.getModel().getValueAt(modelRow, 0);
+                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
 
-                    Optional<Cliente> cliente = clienteService.buscarPorId(id);
-
-                    assert cliente.isPresent();
-
-                    clienteService.removerCliente(cliente.get());
+                    clienteService.removerPorId(id);
                 }
+
             }
         };
 
         Action verPacotes = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(tabelaClientes, "TOOD");
 
+                JTable table = (JTable) e.getSource();
+                int modelRow = Integer.valueOf(e.getActionCommand());
+                Long id = (Long) table.getModel().getValueAt(modelRow, 0);
+
+                Optional<Cliente> cliente = clienteService.buscarPorId(id);
+
+                assert cliente.isPresent();
+
+                Set<Pacote> pacotes = pedidoService.buscarPorClienteId(cliente.get().getId()).stream()
+                        .map(Pedido::getPacote).collect(Collectors.toSet());
+
+                StringBuilder pacotesSb = new StringBuilder();
+
+                for (Pacote pacote : pacotes) {
+                    pacotesSb.append(pacote);
+                }
+
+                JOptionPane.showMessageDialog(tabelaClientes, "TOOD");
             }
         };
 
@@ -265,7 +290,7 @@ public class ClienteFrame extends JFrame {
             clientes = clienteService.buscarTodos();
 
         for (Cliente cliente : clientes) {
-            tabelaClientesModel.addRow(new Object[]{
+            tabelaClientesModel.addRow(new Object[] {
                     cliente.getId(),
                     cliente.getNome(),
                     cliente.getTelefone(),
