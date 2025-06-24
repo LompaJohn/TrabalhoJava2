@@ -5,15 +5,13 @@ VALUES ('Carlos Oliveira', '(31) 98765-4321', 'carlos.oliveira@email.com', '111.
        ('Luisa Mendes', '(11) 91234-5678', 'luisa.m@email.com', '999.888.777-66', NULL, 'NACIONAL'),
        ('Yuki Tanaka', '(81) 90-1234-5678', 'yuki.t@email.com', NULL, 'JP12345678', 'ESTRANGEIRO');
 
-
-INSERT INTO PacoteViagem (nome, destino, data_inicio, data_fim, preco, tipo)
-VALUES ('Exploração Pantanal', 'Mato Grosso do Sul', '2025-02-01', '2025-02-10', 2800.00, 'AVENTURA'),
-       ('Resort Premium em Gramado', 'Gramado, RS', '2025-03-15', '2025-03-20', 8500.00, 'LUXO'),
-       ('Rota das Cidades Históricas', 'Ouro Preto, Tiradentes, Mariana', '2025-04-10', '2025-04-16', 4200.00,
-        'CULTURAL'),
-       ('Paraíso nas Bahamas', 'Nassau, Bahamas', '2025-05-01', '2025-05-09', 22000.00, 'ROMANTICO'),
-       ('Trilhas no Monte Roraima', 'Roraima', '2025-06-20', '2025-06-27', 3800.00, 'AVENTURA'),
-       ('Gastronomia Italiana', 'Roma, Florença, Bolonha', '2025-07-05', '2025-07-15', 18000.00, 'CULTURAL');
+INSERT INTO PacoteViagem (nome, destino, duracao_dias, preco, tipo)
+VALUES ('Exploração Pantanal', 'Mato Grosso do Sul', 9, 2800.00, 'AVENTURA'),
+       ('Resort Premium em Gramado', 'Gramado, RS', 5, 8500.00, 'LUXO'),
+       ('Rota das Cidades Históricas', 'Ouro Preto, Tiradentes, Mariana', 6, 4200.00, 'CULTURAL'),
+       ('Paraíso nas Bahamas', 'Nassau, Bahamas', 8, 22000.00, 'ROMANTICO'),
+       ('Trilhas no Monte Roraima', 'Roraima', 7, 3800.00, 'AVENTURA'),
+       ('Gastronomia Italiana', 'Roma, Florença, Bolonha', 10, 18000.00, 'CULTURAL');
 
 INSERT INTO ServicoAdicional (nome, preco, descricao)
 VALUES ('Seguro Viagem', 120.00, 'Cobertura básica para imprevistos'),

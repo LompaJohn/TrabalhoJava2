@@ -24,14 +24,13 @@ CREATE TABLE PacoteViagem (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     destino VARCHAR(100) NOT NULL,
-    data_inicio DATE NOT NULL,
-    data_fim DATE NOT NULL,
+    duracao_dias INT NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
     tipo VARCHAR(50) NOT NULL,
     ativo BOOLEAN DEFAULT TRUE,
 
     CHECK (preco > 0),
-    CHECK (data_fim > data_inicio)
+    CHECK (duracao_dias > 0)
 );
 
 CREATE TABLE ServicoAdicional (

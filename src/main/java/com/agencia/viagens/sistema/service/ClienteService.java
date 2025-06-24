@@ -7,7 +7,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +42,6 @@ public class ClienteService {
         return repository.findById(id);
     }
 
-    @Transactional
-    public void removerCliente(Cliente cliente) {
-        repository.delete(cliente);
-    }
 
     @Transactional
     public void removerPorId(Long id) {

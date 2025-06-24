@@ -4,14 +4,17 @@ package com.agencia.viagens.sistema.swing.frames;
 // import org.springframework.beans.factory.annotation.Autowired;
 // someService = ApplicationMain.getSpringContext().getBean(SomeService.class);
 
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
     private ClienteFrame clienteFrame;
+    private PacotesFrame pacotesFrame;
 
     public MainFrame() {
         this.clienteFrame = new ClienteFrame(this);
+        this.pacotesFrame = new PacotesFrame(this);
         initializeUI();
     }
 
@@ -42,6 +45,10 @@ public class MainFrame extends JFrame {
 
         JButton pacotesBtn = new JButton("Pacotes");
         pacotesBtn.setFont(new Font("Arial", Font.BOLD, 24));
+        pacotesBtn.addActionListener(e -> {
+            this.setVisible(false);
+            pacotesFrame.setVisible(true);
+        });
 
         JButton servicosBtn = new JButton("Serviços");
         servicosBtn.setFont(new Font("Arial", Font.BOLD, 24));
