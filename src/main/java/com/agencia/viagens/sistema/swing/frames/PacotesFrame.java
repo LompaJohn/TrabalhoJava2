@@ -284,10 +284,20 @@ public class PacotesFrame extends JFrame {
                 }
 
                 tableClientes.addRule();
-                JTextArea txtAreaPacotes = new JTextArea(tableClientes.render());
-                txtAreaPacotes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 
-                JOptionPane.showMessageDialog(tabelaPacotes, txtAreaPacotes);
+                JTextArea txtAreaClientes = new JTextArea(tableClientes.render());
+                txtAreaClientes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+                txtAreaClientes.setEditable(false);
+
+                JScrollPane scrollPane = new JScrollPane(txtAreaClientes);
+
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Clientes");
+                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                dialog.getContentPane().add(scrollPane);
+                dialog.pack();
+                dialog.setLocationRelativeTo(tabelaPacotes);
+                dialog.setVisible(true);
             }
         };
 

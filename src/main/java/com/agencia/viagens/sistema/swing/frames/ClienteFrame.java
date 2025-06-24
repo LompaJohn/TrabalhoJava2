@@ -274,10 +274,20 @@ public class ClienteFrame extends JFrame {
                     tablePacotes.addRow(pacote.getId(), pacote.getNome(), pacote.getTipo(), pacote.getDescricao(), pacote.getDuracaoDias(), pacote.getPreco());
                 }
                 tablePacotes.addRule();
+
                 JTextArea txtAreaPacotes = new JTextArea(tablePacotes.render());
                 txtAreaPacotes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+                txtAreaPacotes.setEditable(false);
 
-                JOptionPane.showMessageDialog(tabelaClientes, txtAreaPacotes);
+                JScrollPane scrollPane = new JScrollPane(txtAreaPacotes);
+
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Pacotes");
+                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+                dialog.getContentPane().add(scrollPane);
+                dialog.pack();
+                dialog.setLocationRelativeTo(tabelaClientes);
+                dialog.setVisible(true);
             }
         };
 
