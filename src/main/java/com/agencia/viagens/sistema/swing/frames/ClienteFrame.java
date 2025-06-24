@@ -9,6 +9,7 @@ import com.agencia.viagens.sistema.service.PedidoService;
 import com.agencia.viagens.sistema.swing.ApplicationMain;
 import com.agencia.viagens.sistema.swing.ButtonColumn;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import de.vandermeer.asciitable.AsciiTable;
 import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -20,9 +21,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-// TODO: deletar cliente do bd
-// TODO: ver pacotes do cliente
 
 public class ClienteFrame extends JFrame {
     private final JFrame parent;
@@ -103,7 +101,7 @@ public class ClienteFrame extends JFrame {
 
         String comboCPF = "Nacional (CPF)";
         String comboPassaporte = "Estrangeiro (Passaporte)";
-        JComboBox<String> tipoCombo = new JComboBox<>(new String[] { comboCPF, comboPassaporte });
+        JComboBox<String> tipoCombo = new JComboBox<>(new String[]{comboCPF, comboPassaporte});
 
         JLabel docLabel = new JLabel("Documento:");
         JTextField docField = new JTextField();
@@ -199,7 +197,7 @@ public class ClienteFrame extends JFrame {
     }
 
     private void createClienteList() {
-        String[] colunas = { "ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar" };
+        String[] colunas = {"ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar"};
 
         int nomeIdx = ArrayUtils.indexOf(colunas, "Nome");
         int documentoIdx = ArrayUtils.indexOf(colunas, "Documento");
@@ -261,13 +259,25 @@ public class ClienteFrame extends JFrame {
                 Set<Pacote> pacotes = pedidoService.buscarPorClienteId(cliente.get().getId()).stream()
                         .map(Pedido::getPacote).collect(Collectors.toSet());
 
-                StringBuilder pacotesSb = new StringBuilder();
-
-                for (Pacote pacote : pacotes) {
-                    pacotesSb.append(pacote);
+                if (pacotes.isEmpty()) {
+                    JOptionPane.showMessageDialog(tabelaClientes, "Nenhum pacote encontrado!");
+                    return;
                 }
 
-                JOptionPane.showMessageDialog(tabelaClientes, "TOOD");
+                AsciiTable tablePacotes = new AsciiTable();
+
+                tablePacotes.addRule();
+                tablePacotes.addRow("ID", "Nome", "Tipo", "Descricao", "Duracao Dias", "Preco");
+                tablePacotes.addRule();
+
+                for (Pacote pacote : pacotes) {
+                    tablePacotes.addRow(pacote.getId(), pacote.getNome(), pacote.getTipo(), pacote.getDescricao(), pacote.getDuracaoDias(), pacote.getPreco());
+                }
+                tablePacotes.addRule();
+                JTextArea txtAreaPacotes = new JTextArea(tablePacotes.render());
+                txtAreaPacotes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+
+                JOptionPane.showMessageDialog(tabelaClientes, txtAreaPacotes);
             }
         };
 
@@ -290,7 +300,7 @@ public class ClienteFrame extends JFrame {
             clientes = clienteService.buscarTodos();
 
         for (Cliente cliente : clientes) {
-            tabelaClientesModel.addRow(new Object[] {
+            tabelaClientesModel.addRow(new Object[]{
                     cliente.getId(),
                     cliente.getNome(),
                     cliente.getTelefone(),
