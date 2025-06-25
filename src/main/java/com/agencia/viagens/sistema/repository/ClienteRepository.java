@@ -8,15 +8,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByCpfOrPassaporte(String cpf, String passaporte);
 
     @Query("SELECT c FROM Cliente c WHERE " +
-            "c.nome LIKE %:query% OR " +
-            "c.email LIKE %:query% OR " +
-            "c.telefone LIKE %:query% OR " +
-            "c.cpf LIKE %:query%")
+            "CAST(c.id AS string) LIKE CONCAT('%', :query, '%') OR " +
+            "c.nome LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "c.email LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "c.telefone LIKE LOWER(CONCAT('%', :query, '%')) OR " +
+            "c.cpf LIKE LOWER(CONCAT('%', :query, '%'))")
     List<Cliente> buscar(@Param("query") String query);
 
 }

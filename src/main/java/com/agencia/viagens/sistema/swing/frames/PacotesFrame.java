@@ -49,7 +49,7 @@ public class PacotesFrame extends JFrame {
         createMenuBar();
         createHeader();
         createPacoteSearch();
-        createClienteList();
+        createPacoteTable();
 
         this.add(mainPanel, BorderLayout.CENTER);
     }
@@ -96,7 +96,6 @@ public class PacotesFrame extends JFrame {
         JLabel precoLabel = new JLabel("Preço:");
         JTextField precoField = new JTextField();
 
-
         JLabel tipoLabel = new JLabel("Tipo:");
         JTextField tipoField = new JTextField();
 
@@ -115,6 +114,7 @@ public class PacotesFrame extends JFrame {
                 JOptionPane.showMessageDialog(this, "Duração invalida!", "ERRO", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
             try {
                 pacote.setPreco(BigDecimal.valueOf(Double.parseDouble(precoField.getText())));
             } catch (NumberFormatException ex) {
@@ -170,7 +170,7 @@ public class PacotesFrame extends JFrame {
         searchField.putClientProperty("JTextField.placeholderText", "Buscar pacote...");
         searchField.addActionListener(e -> {
             String query = searchField.getText();
-            atualizarTabelaPacotes(query.isEmpty() ? null : pacoteService.buscar(query));
+            atualizarTabelaPacotes(pacoteService.buscar(query));
         });
 
         JButton buscarBtn = new JButton("Buscar");
@@ -196,12 +196,12 @@ public class PacotesFrame extends JFrame {
         mainPanel.add(searchPanel);
     }
 
-    private void createClienteList() {
+    private void createPacoteTable() {
         // ção
-        String[] colunas = {"ID", "Nome", "Tipo", "Descrição", "Duração Dias", "Preço", "Ver Pacotes", "Deletar"};
+        String[] colunas = { "ID", "Nome", "Tipo", "Descrição", "Duração Dias", "Preço", "Ver Clientes", "Deletar" };
 
         int nomeIdx = ArrayUtils.indexOf(colunas, "Nome");
-        int pacotesIdx = ArrayUtils.indexOf(colunas, "Ver Pacotes");
+        int pacotesIdx = ArrayUtils.indexOf(colunas, "Ver Clientes");
         int deletarIdx = ArrayUtils.indexOf(colunas, "Deletar");
 
         this.tabelaPacotesModel = new DefaultTableModel(colunas, 0) {
@@ -279,14 +279,16 @@ public class PacotesFrame extends JFrame {
                                     : cliente.getPassaporte(),
                             cliente.getTipo() == ClienteTipo.NACIONAL
                                     ? "CPF"
-                                    : "Passaporte"
-                    );
+                                    : "Passaporte");
                 }
 
                 tableClientes.addRule();
 
                 JTextArea txtAreaClientes = new JTextArea(tableClientes.render());
                 txtAreaClientes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+
+                System.err.println("canDisplay: " + txtAreaClientes.getFont().canDisplay('┌'));
+
                 txtAreaClientes.setEditable(false);
 
                 JScrollPane scrollPane = new JScrollPane(txtAreaClientes);
@@ -320,7 +322,7 @@ public class PacotesFrame extends JFrame {
             pacotes = pacoteService.buscarTodos();
 
         for (Pacote pacote : pacotes) {
-            tabelaPacotesModel.addRow(new Object[]{
+            tabelaPacotesModel.addRow(new Object[] {
                     pacote.getId(),
                     pacote.getNome(),
                     pacote.getTipo(),

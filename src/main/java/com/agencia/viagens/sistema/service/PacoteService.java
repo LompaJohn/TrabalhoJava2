@@ -17,7 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PacoteService {
     private final PacoteRepository repository;
-    private final PedidoRepository pedidoRepository;
 
     @Transactional
     public List<Pacote> buscarTodos() {
@@ -29,16 +28,9 @@ public class PacoteService {
         return repository.findById(id);
     }
 
-
     @Transactional
     public List<Pacote> buscar(String query) {
-        Long id = NumberUtils.createLong(query);
-        int duracao = NumberUtils.toInt(query, 0);
-        BigDecimal preco = NumberUtils.createBigDecimal(query);
-
-        return repository.findByIdOrNomeOrDestinoOrDuracaoDiasOrPrecoOrTipoOrDescricao(
-                id, query, query, duracao, preco, query, query
-        );
+        return repository.buscar(query);
     }
 
     @Transactional

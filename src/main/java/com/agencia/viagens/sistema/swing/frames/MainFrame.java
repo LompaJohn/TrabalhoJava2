@@ -1,20 +1,19 @@
 package com.agencia.viagens.sistema.swing.frames;
 
-
-// import org.springframework.beans.factory.annotation.Autowired;
-// someService = ApplicationMain.getSpringContext().getBean(SomeService.class);
-
-
 import javax.swing.*;
 import java.awt.*;
+
+// TODO: validar o tamanho dos fields
 
 public class MainFrame extends JFrame {
     private ClienteFrame clienteFrame;
     private PacotesFrame pacotesFrame;
+    private ServicosFrame servicosFrame;
 
     public MainFrame() {
         this.clienteFrame = new ClienteFrame(this);
         this.pacotesFrame = new PacotesFrame(this);
+        this.servicosFrame = new ServicosFrame(this);
         initializeUI();
     }
 
@@ -22,12 +21,11 @@ public class MainFrame extends JFrame {
 
         setTitle("Agência de Viagens");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        setSize(800, 600);
+        // setSize(800, 600);
         setSize(1280, 720);
         setExtendedState(JFrame.NORMAL);
 
         setLayout(new BorderLayout());
-
 
         JLabel title = new JLabel("Sistema Agência de Viagens", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));
@@ -52,6 +50,10 @@ public class MainFrame extends JFrame {
 
         JButton servicosBtn = new JButton("Serviços");
         servicosBtn.setFont(new Font("Arial", Font.BOLD, 24));
+        servicosBtn.addActionListener(e -> {
+            this.setVisible(false);
+            servicosFrame.setVisible(true);
+        });
 
         JButton pedidosBtn = new JButton("Pedidos");
         pedidosBtn.setFont(new Font("Arial", Font.BOLD, 24));
