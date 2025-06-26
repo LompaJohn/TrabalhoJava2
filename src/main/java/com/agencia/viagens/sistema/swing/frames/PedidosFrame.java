@@ -277,17 +277,17 @@ public class PedidosFrame extends JFrame {
                             entry.getValue()))
                     .collect(Collectors.toList());
 
-            pedido.setValorTotal(total);
 
             for (ServicoCount servicoCount : servicos) {
                 total = total.add(servicoCount.servico().getPreco().multiply(new BigDecimal(servicoCount.count())));
             }
 
+            pedido.setValorTotal(total);
+
             pedidosService.salvarPedido(pedido);
 
             for (ServicoCount servicoCount : servicos) {
                 PedidoServico pdsv = new PedidoServico();
-                System.err.println("AAAAAAAAAAAAAAAAAAA: " + servicoCount.count());
 
                 pdsv.setServico(servicoCount.servico());
                 pdsv.setPedido(pedido);
