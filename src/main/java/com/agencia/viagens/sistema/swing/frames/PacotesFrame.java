@@ -235,9 +235,13 @@ public class PacotesFrame extends JFrame {
 
                 if (result == JOptionPane.YES_OPTION) {
                     Long id = (Long) table.getModel().getValueAt(modelRow, 0);
-                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
 
-                    pacoteService.removerPorId(id);
+                    try {
+                        pacoteService.removerPorId(id);
+                        ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(window, "Pacote não pode ser deletado!", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             }

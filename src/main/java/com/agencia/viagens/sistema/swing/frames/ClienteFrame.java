@@ -16,6 +16,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -236,9 +237,13 @@ public class ClienteFrame extends JFrame {
 
                 if (result == JOptionPane.YES_OPTION) {
                     Long id = (Long) table.getModel().getValueAt(modelRow, 0);
-                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
 
-                    clienteService.removerPorId(id);
+                    try {
+                        clienteService.removerPorId(id);
+                        ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(window, "Cliente não pode ser deletado!", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             }

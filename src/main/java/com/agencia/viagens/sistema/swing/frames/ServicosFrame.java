@@ -203,9 +203,14 @@ public class ServicosFrame extends JFrame {
 
                 if (result == JOptionPane.YES_OPTION) {
                     Long id = (Long) table.getModel().getValueAt(modelRow, 0);
-                    ((DefaultTableModel) table.getModel()).removeRow(modelRow);
 
-                    servicoService.removerPorId(id);
+                    try {
+                        servicoService.removerPorId(id);
+                        ((DefaultTableModel) table.getModel()).removeRow(modelRow);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(window, "Serviço não pode ser deletado!", "ERRO", JOptionPane.ERROR_MESSAGE);
+                    }
+
                 }
 
             }
