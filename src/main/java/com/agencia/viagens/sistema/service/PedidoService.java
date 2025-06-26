@@ -2,6 +2,7 @@ package com.agencia.viagens.sistema.service;
 
 import com.agencia.viagens.sistema.entity.Cliente;
 import com.agencia.viagens.sistema.entity.Pedido;
+import com.agencia.viagens.sistema.entity.Servico;
 import com.agencia.viagens.sistema.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,11 @@ public class PedidoService {
     }
 
     @Transactional
+    public List<Pedido> buscar(String query) {
+        return repository.buscar(query);
+    }
+
+    @Transactional
     public Set<Cliente> buscarClientesPorPacoteId(Long pacoteId) {
         return repository.findClientsByPacoteId(pacoteId);
     }
@@ -44,6 +50,11 @@ public class PedidoService {
     @Transactional
     public void removerPedido(Pedido pedido) {
         repository.delete(pedido);
+    }
+
+    @Transactional
+    public void removerPorId(Long id) {
+        repository.deleteById(id);
     }
 
     @Transactional

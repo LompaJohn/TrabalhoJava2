@@ -9,7 +9,6 @@ import com.agencia.viagens.sistema.service.PedidoService;
 import com.agencia.viagens.sistema.swing.ApplicationMain;
 import com.agencia.viagens.sistema.swing.ButtonColumn;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
-import de.vandermeer.asciitable.AsciiTable;
 import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -101,7 +100,7 @@ public class ClienteFrame extends JFrame {
 
         String comboCPF = "Nacional (CPF)";
         String comboPassaporte = "Estrangeiro (Passaporte)";
-        JComboBox<String> tipoCombo = new JComboBox<>(new String[]{comboCPF, comboPassaporte});
+        JComboBox<String> tipoCombo = new JComboBox<>(new String[] { comboCPF, comboPassaporte });
 
         JLabel docLabel = new JLabel("Documento:");
         JTextField docField = new JTextField();
@@ -197,7 +196,7 @@ public class ClienteFrame extends JFrame {
     }
 
     private void createClienteList() {
-        String[] colunas = {"ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar"};
+        String[] colunas = { "ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo", "Ver Pacotes", "Deletar" };
 
         int nomeIdx = ArrayUtils.indexOf(colunas, "Nome");
         int documentoIdx = ArrayUtils.indexOf(colunas, "Documento");
@@ -264,30 +263,21 @@ public class ClienteFrame extends JFrame {
                     return;
                 }
 
-                AsciiTable tablePacotes = new AsciiTable();
-
-                tablePacotes.addRule();
-                tablePacotes.addRow("ID", "Nome", "Tipo", "Descricao", "Duracao Dias", "Preco");
-                tablePacotes.addRule();
+                StringBuilder sb = new StringBuilder();
 
                 for (Pacote pacote : pacotes) {
-                    tablePacotes.addRow(pacote.getId(), pacote.getNome(), pacote.getTipo(), pacote.getDescricao(), pacote.getDuracaoDias(), pacote.getPreco());
+                    sb.append("\u2022 [");
+                    sb.append(pacote.getId());
+                    sb.append("] ");
+                    sb.append(pacote.getNome());
+                    sb.append("\n");
                 }
-                tablePacotes.addRule();
 
-                JTextArea txtAreaPacotes = new JTextArea(tablePacotes.render());
-                txtAreaPacotes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+                JTextArea txtAreaPacotes = new JTextArea(sb.toString());
                 txtAreaPacotes.setEditable(false);
 
-                JScrollPane scrollPane = new JScrollPane(txtAreaPacotes);
+                JOptionPane.showMessageDialog(tabelaClientes, txtAreaPacotes);
 
-                JDialog dialog = new JDialog();
-                dialog.setTitle("Pacotes");
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                dialog.getContentPane().add(scrollPane);
-                dialog.pack();
-                dialog.setLocationRelativeTo(tabelaClientes);
-                dialog.setVisible(true);
             }
         };
 
@@ -310,7 +300,7 @@ public class ClienteFrame extends JFrame {
             clientes = clienteService.buscarTodos();
 
         for (Cliente cliente : clientes) {
-            tabelaClientesModel.addRow(new Object[]{
+            tabelaClientesModel.addRow(new Object[] {
                     cliente.getId(),
                     cliente.getNome(),
                     cliente.getTelefone(),

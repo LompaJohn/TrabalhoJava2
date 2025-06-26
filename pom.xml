@@ -80,13 +80,11 @@
             <artifactId>libphonenumber</artifactId>
             <version>9.0.7</version>
         </dependency>
-
         <dependency>
-            <groupId>de.vandermeer</groupId>
-            <artifactId>asciitable</artifactId>
-            <version>0.3.2</version>
+            <groupId>com.github.lgooddatepicker</groupId>
+            <artifactId>LGoodDatePicker</artifactId>
+            <version>11.2.1</version>
         </dependency>
-
     </dependencies>
 
     <build>

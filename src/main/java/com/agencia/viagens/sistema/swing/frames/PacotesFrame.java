@@ -7,7 +7,6 @@ import com.agencia.viagens.sistema.service.PacoteService;
 import com.agencia.viagens.sistema.service.PedidoService;
 import com.agencia.viagens.sistema.swing.ApplicationMain;
 import com.agencia.viagens.sistema.swing.ButtonColumn;
-import de.vandermeer.asciitable.AsciiTable;
 import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -262,44 +261,23 @@ public class PacotesFrame extends JFrame {
                     return;
                 }
 
-                AsciiTable tableClientes = new AsciiTable();
-
-                tableClientes.addRule();
-                tableClientes.addRow("ID", "Nome", "Telefone", "E-mail", "Documento", "Tipo");
-                tableClientes.addRule();
+                StringBuilder sb = new StringBuilder();
 
                 for (Cliente cliente : clientes) {
-                    tableClientes.addRow(
-                            cliente.getId(),
-                            cliente.getNome(),
-                            cliente.getTelefone(),
-                            cliente.getEmail(),
-                            cliente.getTipo() == ClienteTipo.NACIONAL
-                                    ? cliente.getCpf()
-                                    : cliente.getPassaporte(),
-                            cliente.getTipo() == ClienteTipo.NACIONAL
-                                    ? "CPF"
-                                    : "Passaporte");
+                    sb.append("\u2022 [");
+                    sb.append(cliente.getId());
+                    sb.append("] ");
+                    sb.append(cliente.getNome());
+                    sb.append(" (");
+                    sb.append(cliente.getTipo() == ClienteTipo.NACIONAL
+                            ? cliente.getCpf()
+                            : cliente.getPassaporte());
+                    sb.append(")\n");
                 }
 
-                tableClientes.addRule();
-
-                JTextArea txtAreaClientes = new JTextArea(tableClientes.render());
-                txtAreaClientes.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-
-                System.err.println("canDisplay: " + txtAreaClientes.getFont().canDisplay('┌'));
-
+                JTextArea txtAreaClientes = new JTextArea(sb.toString());
                 txtAreaClientes.setEditable(false);
-
-                JScrollPane scrollPane = new JScrollPane(txtAreaClientes);
-
-                JDialog dialog = new JDialog();
-                dialog.setTitle("Clientes");
-                dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-                dialog.getContentPane().add(scrollPane);
-                dialog.pack();
-                dialog.setLocationRelativeTo(tabelaPacotes);
-                dialog.setVisible(true);
+                JOptionPane.showMessageDialog(tabelaPacotes, txtAreaClientes);
             }
         };
 

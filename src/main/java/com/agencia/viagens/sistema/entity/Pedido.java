@@ -1,6 +1,5 @@
 package com.agencia.viagens.sistema.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

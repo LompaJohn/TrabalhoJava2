@@ -9,11 +9,13 @@ public class MainFrame extends JFrame {
     private ClienteFrame clienteFrame;
     private PacotesFrame pacotesFrame;
     private ServicosFrame servicosFrame;
+    private PedidosFrame pedidosFrame;
 
     public MainFrame() {
         this.clienteFrame = new ClienteFrame(this);
         this.pacotesFrame = new PacotesFrame(this);
         this.servicosFrame = new ServicosFrame(this);
+        this.pedidosFrame = new PedidosFrame(this);
         initializeUI();
     }
 
@@ -57,6 +59,10 @@ public class MainFrame extends JFrame {
 
         JButton pedidosBtn = new JButton("Pedidos");
         pedidosBtn.setFont(new Font("Arial", Font.BOLD, 24));
+        pedidosBtn.addActionListener(e -> {
+            this.setVisible(false);
+            pedidosFrame.setVisible(true);
+        });
 
         buttonPanel.add(clientesBtn);
         buttonPanel.add(pacotesBtn);
