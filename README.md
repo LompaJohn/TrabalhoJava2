@@ -1,5 +1,10 @@
 # Agencia de Viagens
 
+## Dependencias
+
+1. JDK 21
+2. Maven
+
 ## Configuracao
 
 ### Base de dados
@@ -19,7 +24,13 @@ spring.datasource.password=guest123
 
 ## Rodar
 
-1. usar o [mvnw](mvnw) OU usar o IntelliJ
-2. acessar a interface por meio do [https://localhost:8080](https://localhost:8080)
-2. acessar a documentacao da API por meio
-   do [https://localhost:8080/api-docs.html](https://localhost:8080/api-docs.html)
+### Com Maven
+
+```sh
+mvn clean compile exec:java
+```
+
+### Com o IntelliJ
+
+1. Abrir o arquivo da classe [ApplicationMain](./src/main/java/com/agencia/viagens/sistema/swing/ApplicationMain.java)
+2. Rodar a classe
